@@ -7,7 +7,14 @@ export default [
     // 공통 규칙을 건드리지 않고 여기에만 Node 전역을 준다.
     files: ['scripts/**/*.mjs', 'astro.config.mjs'],
     languageOptions: {
-      globals: { process: 'readonly', console: 'readonly', URL: 'readonly' },
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+        URL: 'readonly',
+        fetch: 'readonly',
+        setTimeout: 'readonly',
+        Buffer: 'readonly',
+      },
     },
   },
   {

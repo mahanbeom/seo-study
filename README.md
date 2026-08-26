@@ -24,7 +24,11 @@
    이 저장소의 핵심입니다. SPEC의 완료 기준을 빌드 산출물에서 파싱해 검사하고,
    하나라도 실패하면 exit 1 을 냅니다. CI에서도 실행되어 **검증에 실패한 산출물은
    배포되지 않습니다.**
-3. **[`korean-food/src/content.config.ts`](korean-food/src/content.config.ts)** —
+3. **[`korean-food/docs/metrics/`](korean-food/docs/metrics)** —
+   배포마다 자동 기록되는 Lighthouse·Core Web Vitals·콘텐츠 규모 히스토리.
+   어느 커밋에서 무엇이 꺾였는지 되짚을 수 있습니다. SEO·접근성이 기준선 미만이면
+   CI 가 실패해 배포되지 않습니다.
+4. **[`korean-food/src/content.config.ts`](korean-food/src/content.config.ts)** —
    콘텐츠 스키마. FAQ 배열 하나를 화면과 `FAQPage` JSON-LD가 함께 읽으므로
    "JSON-LD와 화면 내용 일치"가 규율이 아니라 구조로 보장됩니다.
 
@@ -37,6 +41,7 @@ pnpm dev        # 개발 서버
 pnpm verify     # 빌드 + SEO 검사 11종 (실패 시 exit 1)
 pnpm typecheck  # astro check
 pnpm lint
+pnpm metrics    # 빌드 + Lighthouse 측정 → docs/metrics 갱신
 ```
 
 패키지 매니저는 **pnpm** 입니다. `packageManager` 필드로 버전이 고정돼 있어

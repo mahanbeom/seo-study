@@ -7,3 +7,7 @@ coverage
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# scripts/collect-metrics.mjs 가 생성한다. 포맷터가 손대면 매 실행마다 diff 가 생긴다.
+docs/metrics/README.md
+docs/metrics/history.jsonl
