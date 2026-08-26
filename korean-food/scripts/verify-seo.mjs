@@ -242,10 +242,15 @@ check('6. JSON-LD 구조화 데이터', () => {
         article.mainEntityOfPage === localeUrl(p.locale),
         `${p.rel}: Article.mainEntityOfPage 가 canonical 과 다릅니다.`,
       );
-      expect(
-        /^\d{4}-\d{2}-\d{2}$/.test(article.dateModified ?? ''),
-        `${p.rel}: dateModified 형식 오류.`,
-      );
+      // 날짜만 있는 값은 Google 이 "datetime 값이 잘못됨 / 시간대 누락" 경고를 낸다.
+      // 시간대를 포함한 완전한 ISO 8601 을 요구한다.
+      const ISO_WITH_TZ = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/;
+      for (const field of ['datePublished', 'dateModified']) {
+        expect(
+          ISO_WITH_TZ.test(article[field] ?? ''),
+          `${p.rel}: Article.${field} 이 시간대를 포함한 ISO 8601 이 아닙니다 — "${article[field]}"`,
+        );
+      }
     }
   }
 });

@@ -18,7 +18,9 @@ const root = rootUrl(Astro.site);
 const orgId = `${root}#org`;
 const siteId = `${root}#website`;
 
-const isoDate = (d: Date) => d.toISOString().slice(0, 10);
+// Google 은 날짜만 있는 값(2026-09-01)에 "datetime 값이 잘못됨 / 시간대 누락" 경고를 낸다.
+// 시간대를 포함한 완전한 ISO 8601 로 내보낸다. 화면의 <time datetime> 은 날짜만으로 충분하다.
+const isoDateTime = (d: Date) => d.toISOString();
 
 // SPEC.md §4.5 / §5 — mainEntity 는 화면 FAQ와 **같은 data.faq** 를 읽는다.
 // 두 벌을 만들지 않으므로 "JSON-LD와 화면 내용 일치" 가 구조적으로 성립한다.
@@ -32,8 +34,8 @@ const graph = {
       headline: data.h1,
       description: data.description,
       inLanguage: locale,
-      datePublished: isoDate(data.datePublished),
-      dateModified: isoDate(data.dateModified),
+      datePublished: isoDateTime(data.datePublished),
+      dateModified: isoDateTime(data.dateModified),
       author: { '@type': 'Person', name: data.author.name, url: data.author.url },
       publisher: { '@id': orgId },
       mainEntityOfPage: canonical,
