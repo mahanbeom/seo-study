@@ -72,8 +72,13 @@ jobs:
             echo "지표 변화 없음 — 커밋 생략"
             exit 0
           fi
-          # [skip ci] 가 없으면 이 커밋이 워크플로를 다시 트리거해 무한 루프가 된다.
-          git commit -m "chore(metrics): ${GITHUB_SHA::7} 배포 지표 기록 [skip ci]"
+          # 루프 걱정은 하지 않아도 된다 — 기본 GITHUB_TOKEN 으로 만든 push 이벤트는
+          # 워크플로를 새로 트리거하지 않는다(GitHub 의 재귀 방지 동작).
+          #
+          # 커밋 메시지에 skip 마커를 넣지 않는다. 그 토큰은 메시지 **어디에 있든**
+          # 동작하므로, 설명하려고 본문에 적기만 해도 배포가 조용히 건너뛰어진다.
+          # 실제로 이 파이프라인을 도입한 커밋이 그 이유로 배포되지 않았다.
+          git commit -m "chore(metrics): ${GITHUB_SHA::7} 배포 지표 기록"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
