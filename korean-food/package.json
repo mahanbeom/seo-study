@@ -25,7 +25,8 @@
     "cheerio": "^1.2.0",
     "eslint": "^10.9.1",
     "prettier": "^3.9.6",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "yaml": "^2.9.0"
   },
   "prettier": "@mahanbeom/kit/prettier",
   "packageManager": "pnpm@11.21.0"

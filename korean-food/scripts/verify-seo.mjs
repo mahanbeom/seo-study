@@ -323,6 +323,28 @@ check('9. 사이트맵', () => {
         `사이트맵이 noindex 페이지를 제출합니다 — ${url}`,
       );
     }
+
+    // lastmod 는 실제 수정일이어야 한다. 거짓 값은 이 신호에 대한 신뢰를 깎고,
+    // 정말로 고쳤을 때 재크롤을 늦춘다. JSON-LD 의 dateModified 와 일치하는지 본다.
+    const entries = [...body.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => m[1]);
+    for (const entry of entries) {
+      const loc = entry.match(/<loc>([^<]+)<\/loc>/)?.[1];
+      const lastmod = entry.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1];
+      expect(lastmod, `사이트맵 항목에 <lastmod> 가 없습니다 — ${loc}`);
+      if (!lastmod || !loc) continue;
+
+      const page = localePages.find((p) => localeUrl(p.locale) === loc);
+      if (!page) continue;
+
+      const raw = page.$('script[type="application/ld+json"]').first().html();
+      const article = (JSON.parse(raw ?? '{}')['@graph'] ?? []).find(
+        (n) => n['@type'] === 'Article',
+      );
+      expect(
+        new Date(lastmod).getTime() === new Date(article?.dateModified ?? 0).getTime(),
+        `${loc}: lastmod 가 dateModified 와 다릅니다.\n      sitemap: ${lastmod}\n      article: ${article?.dateModified}`,
+      );
+    }
   }
 });
 

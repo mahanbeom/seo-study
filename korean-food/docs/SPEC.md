@@ -1,6 +1,8 @@
 # SPEC — `korean food` 다국어 SEO/AEO 페이지
 
-> 최종 수정: 2026-08-26 · 상태: **Phase 1 완료 (영어판)**, Phase 2 대기
+> 최종 수정: 2026-08-26 · 상태: **Phase 1·3 완료 (영어판 배포 + 색인 등록)**, Phase 2 대기
+>
+> 배포: https://mahanbeom.github.io/seo-study/korean-food/en/
 
 ## 1. 무엇을 만드는가
 
@@ -178,6 +180,15 @@ Rich Results Test 는 `2026-09-01` 같은 날짜만 있는 값에
 (`2026-09-01T00:00:00.000Z`)로 출력하면 사라진다. 화면의 `<time datetime>` 은
 날짜만으로 충분하다 — HTML 스펙상 유효하고 사람이 읽는 값이기 때문이다.
 
+### 4.13 사이트맵 `lastmod` 는 콘텐츠의 실제 수정일에서 가져온다
+
+매 빌드마다 현재 시각을 넣으면 값은 늘 "최신"이 되지만, 크롤러는 곧 이 신호를
+신뢰하지 않게 되고 **정말로 고쳤을 때 재크롤이 늦어진다.**
+
+`astro.config.mjs` 에서는 `astro:content` 를 쓸 수 없으므로 콘텐츠 YAML 을 직접 읽어
+`dateModified` 를 `serialize()` 에 주입한다. 검증 9번이 사이트맵의 `lastmod` 와
+페이지 JSON-LD 의 `dateModified` 가 일치하는지 대조한다 — 두 값이 갈라지면 실패한다.
+
 ## 5. 완료 기준 (Definition of Done)
 
 ### Phase 1 — 자동 검증 (`npm run verify` · 11종, 실패 시 exit 1)
@@ -196,6 +207,9 @@ Rich Results Test 는 `2026-09-01` 같은 날짜만 있는 값에
 - [x] 모든 `<img>`에 `alt` + `width`/`height`
 - [x] `<h1>` 페이지당 1개, 헤딩 계층 건너뜀 없음
 - [x] 사이트맵 인덱스가 존재하고 모든 로케일 URL을 포함
+- [x] 사이트맵에 noindex 페이지가 없음
+- [x] 사이트맵의 `lastmod` 가 존재하고 `Article.dateModified` 와 일치 (§4.13)
+- [x] Search Console 소유권 확인 메타 태그가 속성 루트에 존재
 
 > ⚠️ hreflang 개수를 3개로 고정하지 않는다. **콘텐츠가 존재하는 로케일에서 도출**한다.
 > 아직 쓰지 않은 언어의 404 URL을 가리키면 hreflang 세트 전체가 무효화되기 때문이다.

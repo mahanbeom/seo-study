@@ -3,11 +3,11 @@ import config from '@mahanbeom/kit/eslint';
 export default [
   ...config,
   {
-    // 프로젝트 고유 예외 — scripts/ 는 브라우저가 아니라 Node 에서 직접 실행되는
-    // 검증 스크립트다. 공통 규칙을 건드리지 않고 이 디렉터리에만 Node 전역을 준다.
-    files: ['scripts/**/*.mjs'],
+    // 프로젝트 고유 예외 — 이 파일들은 브라우저가 아니라 Node(빌드 머신)에서 실행된다.
+    // 공통 규칙을 건드리지 않고 여기에만 Node 전역을 준다.
+    files: ['scripts/**/*.mjs', 'astro.config.mjs'],
     languageOptions: {
-      globals: { process: 'readonly', console: 'readonly' },
+      globals: { process: 'readonly', console: 'readonly', URL: 'readonly' },
     },
   },
   {

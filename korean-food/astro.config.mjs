@@ -1,6 +1,8 @@
 // @ts-check
+import { readdirSync, readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { parse as parseYaml } from 'yaml';
 
 // SPEC.md §4.1 — 전 페이지를 빌드 타임에 프리렌더한다.
 // AI 크롤러(GPTBot/ClaudeBot/PerplexityBot)는 JS를 실행하지 않으므로
@@ -9,6 +11,26 @@ import sitemap from '@astrojs/sitemap';
 
 const SITE = 'https://mahanbeom.github.io';
 const BASE = '/seo-study/korean-food';
+
+/**
+ * 로케일 URL → 최종 수정일.
+ *
+ * 사이트맵의 `lastmod` 는 **실제 수정일**이어야 한다. 매 빌드마다 현재 시각을 넣는
+ * 식으로 거짓 값을 주면 크롤러가 이 신호를 신뢰하지 않게 되고, 정말로 고쳤을 때
+ * 재크롤이 늦어진다. 그래서 콘텐츠의 dateModified 를 그대로 읽는다.
+ *
+ * astro.config 에서는 `astro:content` 를 쓸 수 없어 YAML 을 직접 읽는다.
+ */
+const CONTENT_DIR = new URL('./src/content/pages/', import.meta.url);
+
+const lastmodByUrl = new Map(
+  readdirSync(CONTENT_DIR)
+    .filter((name) => name.endsWith('.yaml'))
+    .map((name) => {
+      const data = parseYaml(readFileSync(new URL(name, CONTENT_DIR), 'utf8'));
+      return [`${SITE}${BASE}/${data.locale}/`, new Date(data.dateModified).toISOString()];
+    }),
+);
 
 export default defineConfig({
   site: SITE,
@@ -32,6 +54,11 @@ export default defineConfig({
       // 사이트맵에 넣으면 Search Console 이 "제출된 URL이 noindex로 표시됨" 으로
       // 경고하고, 로케일 접두어가 없어 기본 로케일로 오인되어 hreflang 이 중복된다.
       filter: (page) => page !== `${SITE}${BASE}/`,
+      serialize(item) {
+        const lastmod = lastmodByUrl.get(item.url);
+        if (lastmod) item.lastmod = lastmod;
+        return item;
+      },
       // xhtml:link hreflang 대체 링크를 사이트맵에 함께 기재한다.
       i18n: {
         defaultLocale: 'en',
