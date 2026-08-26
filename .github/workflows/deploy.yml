@@ -26,7 +26,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 이 저장소는 실험별 하위 폴더 구조라 package.json 이 루트에 없다.
+      # 명시하지 않으면 pnpm 버전을 결정하지 못해 실패한다.
       - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: korean-food/package.json
 
       - uses: actions/setup-node@v4
         with:
