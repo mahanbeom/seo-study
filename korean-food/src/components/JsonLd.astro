@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { localeUrl, rootUrl, type Locale } from '../lib/site';
+
+interface Props {
+  locale: Locale;
+  data: CollectionEntry<'pages'>['data'];
+  /** 사이트 이름. Organization·BreadcrumbList 에 쓰인다. */
+  siteName: string;
+  /** 빵부스러기 첫 항목의 이름 ("Home" / "ホーム" / "홈"). */
+  homeLabel: string;
+}
+
+const { locale, data, siteName, homeLabel } = Astro.props;
+
+const canonical = localeUrl(Astro.site, locale);
+const root = rootUrl(Astro.site);
+const orgId = `${root}#org`;
+const siteId = `${root}#website`;
+
+const isoDate = (d: Date) => d.toISOString().slice(0, 10);
+
+// SPEC.md §4.5 / §5 — mainEntity 는 화면 FAQ와 **같은 data.faq** 를 읽는다.
+// 두 벌을 만들지 않으므로 "JSON-LD와 화면 내용 일치" 가 구조적으로 성립한다.
+// scripts/verify-seo.mjs 의 검사 7번이 이 성립 여부를 빌드 산출물에서 재확인한다.
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      '@id': `${canonical}#article`,
+      headline: data.h1,
+      description: data.description,
+      inLanguage: locale,
+      datePublished: isoDate(data.datePublished),
+      dateModified: isoDate(data.dateModified),
+      author: { '@type': 'Person', name: data.author.name, url: data.author.url },
+      publisher: { '@id': orgId },
+      mainEntityOfPage: canonical,
+      isPartOf: { '@id': siteId },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonical}#faq`,
+      inLanguage: locale,
+      mainEntity: data.faq.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonical}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: homeLabel, item: root },
+        { '@type': 'ListItem', position: 2, name: data.h1 },
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': siteId,
+      name: siteName,
+      url: root,
+      inLanguage: locale,
+      publisher: { '@id': orgId },
+    },
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: siteName,
+      url: root,
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />

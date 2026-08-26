@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  id: string;
+  heading: string;
+  faq: CollectionEntry<'pages'>['data']['faq'];
+}
+
+const { id, heading, faq } = Astro.props;
+---
+
+{/*
+  SPEC.md §4.5 — JsonLd.astro 와 **같은 배열**을 렌더한다.
+  화면 텍스트와 FAQPage 스키마가 갈라질 수 없는 이유가 여기에 있다.
+
+  질문을 h3 로 둔다. 사용자 질의문과 형태가 일치하고, 헤딩은 dl/dt 보다
+  검색엔진·LLM이 Q&A 쌍으로 인식할 확률이 높다 (지시서 §6.2).
+*/}
+<section aria-labelledby={id} class="faq">
+  <h2 id={id}>{heading}</h2>
+  {
+    faq.map((item) => (
+      <div class="faq-item">
+        <h3>{item.q}</h3>
+        <p>{item.a}</p>
+      </div>
+    ))
+  }
+</section>

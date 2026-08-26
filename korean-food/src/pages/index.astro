@@ -1,0 +1,46 @@
+---
+import { LOCALE_LABEL, asset, localePath, rootUrl } from '../lib/site';
+import { availableLocales } from '../lib/locales';
+import { UI } from '../i18n/ui';
+import '../styles/global.css';
+
+/**
+ * SPEC.md §4.6 — 이 페이지는 x-default(`/en/`)와 내용이 겹치므로 색인 대상이 아니다.
+ * 정적 호스팅에서 meta refresh 리다이렉트를 쓰는 것보다 noindex,follow 가 신호가 깨끗하다.
+ * follow 를 남겨 세 언어 페이지로 크롤이 흘러가게 한다.
+ */
+const canonical = rootUrl(Astro.site);
+const available = await availableLocales();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
+    <title>Korean Food Guide — Choose a language</title>
+    <meta name="description" content="A guide to Korean food in English, Japanese, and Korean." />
+    <meta name="robots" content="noindex,follow" />
+    <link rel="canonical" href={canonical} />
+  </head>
+  <body>
+    <div class="locale-picker">
+      <h1>Korean Food Guide</h1>
+      <p>Choose a language · 言語を選択 · 언어 선택</p>
+      <nav aria-label="Language">
+        <ul>
+          {
+            available.map((l) => (
+              <li>
+                <a href={localePath(l)} hreflang={l} lang={l}>
+                  {LOCALE_LABEL[l]} — {UI[l].siteName}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </body>
+</html>

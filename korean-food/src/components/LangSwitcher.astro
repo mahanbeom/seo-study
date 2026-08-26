@@ -1,0 +1,36 @@
+---
+import { LOCALE_LABEL, localePath, type Locale } from '../lib/site';
+import { availableLocales } from '../lib/locales';
+
+interface Props {
+  current: Locale;
+  label: string;
+}
+
+const { current, label } = Astro.props;
+
+// hreflang과 같은 출처를 쓴다 — 링크가 없는 언어를 가리킬 수 없다.
+const available = await availableLocales();
+---
+
+{/* SPEC.md §5 — client:* 디렉티브를 쓰지 않는다. 언어 전환은 순수 <a> 링크다. */}
+{
+  available.length > 1 && (
+    <nav aria-label={label} class="lang-switcher">
+      <ul>
+        {available.map((l) => (
+          <li>
+            <a
+              href={localePath(l)}
+              hreflang={l}
+              lang={l}
+              aria-current={l === current ? 'page' : undefined}
+            >
+              {LOCALE_LABEL[l]}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

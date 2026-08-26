@@ -1,0 +1,9 @@
+# pnpm 11 은 빌드 스크립트를 기본 차단한다. 여기서 명시적으로 허용한 것만 실행된다.
+allowBuilds:
+  # Astro 의 번들러. 네이티브 바이너리를 postinstall 로 설치하므로 빌드에 반드시 필요하다.
+  esbuild: true
+
+# pnpm 의 minimumReleaseAge 정책(갓 배포된 버전 설치 차단)에서 제외한 항목.
+# 공급망 공격 대비 장치이므로 예외는 필요한 것만 남긴다.
+minimumReleaseAgeExclude:
+  - astro@7.2.7

@@ -1,0 +1,6 @@
+{
+  "//": "Astro 프로젝트라 @mahanbeom/kit 대신 astro/tsconfigs/strict 를 확장한다. astro:content · .astro 모듈 타입이 여기에만 들어있다.",
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
+}

@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+/**
+ * 세 로케일이 **하나의 라우트**에서 생성된다.
+ * 언어별로 마크업이 갈라질 수 없으므로 hreflang 패리티가 구조적으로 보장된다.
+ */
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((entry) => ({
+    params: { locale: entry.data.locale },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<ArticleLayout locale={entry.data.locale} data={entry.data} />

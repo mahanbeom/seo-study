@@ -1,0 +1,292 @@
+locale: en
+
+title: 'Korean Food: A Complete Guide for First-Timers (2026)'
+description: >-
+  What Korean food actually is: rice, fermented foods, and the shared side-dish table
+  called banchan — plus 12 core dishes, spice levels, and how a meal is served.
+
+h1: 'Korean Food: A Complete Guide for First-Timers'
+
+lede: >-
+  Korean food is the cuisine of the Korean Peninsula, built on rice, fermented foods
+  such as kimchi and doenjang, and a shared table of small side dishes called banchan.
+  A typical meal serves rice, soup, and three to twelve banchan simultaneously rather
+  than in courses — a structure called bapsang.
+
+sections:
+  - id: what-makes-korean-food-distinct
+    heading: What Makes Korean Food Distinct
+    body:
+      - >-
+        Three things set Korean cooking apart from its neighbours in China and Japan:
+        fermentation as a foundation rather than a garnish, a table where everything
+        arrives at once, and a seasoning system built on three fermented pastes rather
+        than on stocks or dashi.
+      - >-
+        The three pastes are collectively called jang. Ganjang is soy sauce, doenjang
+        is a thick soybean paste, and gochujang is a red chili paste made from chili
+        powder, glutinous rice, and fermented soybean. All three begin with meju —
+        blocks of cooked soybeans left to ferment with wild microbes. Between them they
+        supply most of the salt, depth, and heat in the cuisine, which is why Korean
+        cooking tastes distinctly different from Chinese or Japanese food even when the
+        ingredients overlap.
+      - >-
+        Kimchi is the best known result of the same instinct. It is not a single recipe
+        but a method: vegetables salted, seasoned, and left to ferment. Napa cabbage
+        kimchi is the default abroad, but Korean households also make kkakdugi from
+        cubed radish, dongchimi as a cold, chili-free brine, and dozens of seasonal
+        variants. In 2013 UNESCO inscribed kimjang — the communal late-autumn practice
+        of making and sharing kimchi for the winter — on its Representative List of the
+        Intangible Cultural Heritage of Humanity.
+      - >-
+        The third distinguishing trait is structural. Where a Western meal moves
+        through courses and a Japanese meal often centres on a single composed plate, a
+        Korean meal spreads across the table at once and is assembled bite by bite by
+        the person eating it.
+
+  - id: core-dishes
+    heading: The Core Dishes
+    render: dish-table
+    body:
+      - >-
+        These twelve account for most of what you will meet first, whether at a Korean
+        restaurant abroad or on a menu in Seoul. Spice is rated from 0 (no chili at
+        all) to 4 (assertively hot). Names follow the Revised Romanization system used
+        by Korea's National Institute of Korean Language; the pronunciation column is
+        an approximation for English speakers.
+      - >-
+        Half of this list contains no chili whatsoever. That is not a curated
+        selection — it reflects the actual balance of the everyday Korean repertoire.
+
+  - id: how-a-korean-meal-is-served
+    heading: How a Korean Meal Is Served
+    body:
+      - >-
+        Everything arrives together. Rice and soup go in front of each person, and the
+        banchan sit in the middle of the table to be shared. There is no first course
+        and no dessert course in the Western sense; you move between rice, soup, and
+        side dishes in whatever order you like, returning to each throughout the meal.
+      - >-
+        Traditional table settings are counted in cheop — the number of side dishes,
+        not counting rice, soup, kimchi, and sauces. A three-cheop table was ordinary
+        in most households. Twelve-cheop was reserved for the royal court. The counting
+        system is largely historical now, but it explains why a modest Korean restaurant
+        still brings four or five small plates you did not order.
+      - >-
+        Utensils come as a pair called sujeo: a long metal spoon and metal chopsticks.
+        The spoon does the work for rice and soup, and the chopsticks handle the
+        banchan. Unlike in Japan, the rice bowl stays on the table rather than being
+        lifted to the mouth.
+      - >-
+        Stews are usually eaten straight from the communal pot in the middle of the
+        table. Grilled meat is wrapped at the table in lettuce or perilla leaf with a
+        dab of ssamjang, a mixture of doenjang and gochujang — a practice called ssam.
+        Banchan are refilled free of charge at nearly every restaurant in Korea; asking
+        for more is normal, not an imposition.
+
+  - id: is-korean-food-spicy
+    heading: Is Korean Food Spicy?
+    body:
+      - >-
+        Less than its reputation suggests. Chili peppers are a recent arrival on the
+        peninsula: the first written mention in Korea dates to 1614, and gochujang
+        recipes only appear in cookbooks from the 1700s. A large share of the classical
+        repertoire was fully formed before chili existed in Korean kitchens, and those
+        dishes are still eaten unchanged.
+      - >-
+        Heat, when it appears, comes from two ingredients. Gochujang is the fermented
+        paste — sweet and thick, with a slow heat. Gochugaru is coarse dried chili
+        flakes, sharper and more immediate. Dishes built on soy sauce, sesame oil, or
+        long-simmered beef broth carry no chili at all: bulgogi, japchae, galbitang,
+        seolleongtang, samgyetang, mul-naengmyeon, and most egg, tofu, and namul
+        banchan.
+      - >-
+        If you want a dish made milder, the phrase is deol maepge haejuseyo
+        (덜 맵게 해주세요) — "please make it less spicy." It works for tteokbokki and
+        most stews, though some dishes are defined by their heat and cannot be
+        meaningfully toned down.
+
+  - id: what-koreans-actually-eat
+    heading: What Koreans Actually Eat Day to Day
+    body:
+      - >-
+        Restaurant Korean food and home Korean food are not the same thing. A weekday
+        home meal is usually rice, one stew or soup, kimchi, and two or three simple
+        banchan — seasoned spinach, braised soybeans, stir-fried anchovies, a rolled
+        omelette. Grilled meat and elaborate spreads belong to eating out and to
+        gatherings.
+      - >-
+        Regional cooking is distinct enough to be worth planning around. Jeonju is
+        associated with bibimbap and with an unusually generous banchan tradition.
+        Busan and the southern coast lean on seafood, including raw fish and fish
+        stews. Jeju has black pork and abundant seafood. Northern-style dishes such as
+        mul-naengmyeon and mandu arrived in the south with families displaced by the
+        Korean War and became national staples.
+      - >-
+        Street food is its own category, concentrated in market alleys and around
+        university districts: tteokbokki, hotteok filled with brown sugar and nuts,
+        gimbap, twigim (battered fried vegetables and seafood), and eomuk fish cake
+        skewers served with hot broth.
+
+  - id: where-to-start
+    heading: Where to Start
+    body:
+      - >-
+        For a first visit, order bulgogi or bibimbap. Both are mild, both arrive as a
+        complete meal, and both appear on nearly every Korean menu outside Korea. Add a
+        shared plate of japchae if there are two or more of you, and let the banchan
+        fill in the rest.
+      - >-
+        On a second visit, try a stew — doenjang-jjigae if you want to understand the
+        base flavour of the cuisine, sundubu-jjigae if you are ready for some heat — or
+        book a table for Korean BBQ, where samgyeopsal or galbi is grilled in front of
+        you and wrapped in lettuce as you go.
+      - >-
+        To drink, soju is the default distilled spirit and pairs with grilled meat;
+        makgeolli is a cloudy, lightly sparkling rice brew usually served with pajeon.
+        Barley tea, served free and often cold, is the standard non-alcoholic option.
+
+dishes:
+  - name: Bibimbap
+    korean: 비빔밥
+    pronunciation: bee-bim-bap
+    spice: 2
+    note: Rice topped with seasoned vegetables, egg, and gochujang, mixed at the table. Dolsot bibimbap arrives in a hot stone bowl that crisps the bottom layer.
+  - name: Bulgogi
+    korean: 불고기
+    pronunciation: bool-go-gee
+    spice: 0
+    note: Thin beef marinated in soy sauce, pear, garlic, and sesame oil, then grilled. The pear enzymes tenderize the meat and give it its sweetness.
+  - name: Samgyeopsal
+    korean: 삼겹살
+    pronunciation: sam-gyup-sal
+    spice: 0
+    note: Unmarinated pork belly grilled at the table and wrapped in lettuce with ssamjang, garlic, and rice.
+  - name: Galbi
+    korean: 갈비
+    pronunciation: gal-bee
+    spice: 0
+    note: Short ribs in a soy and pear marinade, grilled over charcoal. The most common centrepiece of a Korean BBQ meal.
+  - name: Japchae
+    korean: 잡채
+    pronunciation: jap-chae
+    spice: 0
+    note: Sweet potato starch noodles stir-fried with vegetables, sesame oil, and soy sauce. Served warm or at room temperature.
+  - name: Kimchi-jjigae
+    korean: 김치찌개
+    pronunciation: kim-chee-jjee-gae
+    spice: 3
+    note: A stew of aged kimchi with pork or tuna and tofu. Made with kimchi too sour to eat raw, which is the point of it.
+  - name: Doenjang-jjigae
+    korean: 된장찌개
+    pronunciation: dwen-jang-jjee-gae
+    spice: 1
+    note: Soybean paste stew with tofu, courgette, and mushroom. The everyday stew of Korean home cooking.
+  - name: Sundubu-jjigae
+    korean: 순두부찌개
+    pronunciation: soon-doo-boo-jjee-gae
+    spice: 3
+    note: Silken tofu stew in a chili and seafood or pork broth, served bubbling with a raw egg cracked in at the table.
+  - name: Tteokbokki
+    korean: 떡볶이
+    pronunciation: ttuck-bok-ee
+    spice: 3
+    note: Chewy cylindrical rice cakes simmered in a sweet, spicy gochujang sauce. The defining Korean street food.
+  - name: Naengmyeon
+    korean: 냉면
+    pronunciation: naeng-myun
+    spice: 0
+    note: Chilled buckwheat noodles. Mul-naengmyeon comes in an icy beef broth; bibim-naengmyeon is tossed in chili sauce and is not mild.
+  - name: Samgyetang
+    korean: 삼계탕
+    pronunciation: sam-gye-tang
+    spice: 0
+    note: A whole young chicken stuffed with glutinous rice, ginseng, garlic, and jujube, simmered into a clear soup. Eaten in midsummer.
+  - name: Haemul-pajeon
+    korean: 해물파전
+    pronunciation: hae-mool-pa-jun
+    spice: 0
+    note: A thick, crisp-edged pancake of spring onion and seafood, cut into pieces and shared. Traditionally eaten with makgeolli.
+
+faq:
+  - q: Is all Korean food spicy?
+    a: >-
+      No. While gochujang (fermented red chili paste) and gochugaru (dried chili
+      flakes) are common, many staples contain no chili at all — including bulgogi,
+      japchae, galbitang, seolleongtang, samgyetang, mul-naengmyeon, and most egg,
+      tofu, and vegetable banchan. Chili peppers only reached Korea around 1600, and a
+      large part of the classical repertoire predates them.
+  - q: What is banchan?
+    a: >-
+      Banchan are the small side dishes served alongside rice in a Korean meal. A
+      weekday home meal typically includes two or three; a restaurant may bring four to
+      six; a formal hanjeongsik course can bring more than twenty. They are not
+      appetizers — they stay on the table throughout the meal, are shared from the
+      centre, and are refilled free of charge at nearly every restaurant in Korea.
+  - q: What should I order first at a Korean restaurant?
+    a: >-
+      Bulgogi or bibimbap. Both are mild, both arrive as a complete meal rather than a
+      component, and both appear on nearly every Korean menu outside Korea. If you are
+      eating with others, add a shared plate of japchae, which is also chili-free.
+  - q: What is kimchi made of?
+    a: >-
+      Kimchi is vegetables salted, seasoned, and fermented. The most common version
+      uses napa cabbage with gochugaru, garlic, ginger, spring onion, and salted
+      seafood, though hundreds of regional and seasonal variants exist. Kkakdugi uses
+      cubed radish, and dongchimi is a cold brine kimchi made without any chili at all.
+  - q: Can vegetarians eat Korean food?
+    a: >-
+      Yes, but it requires asking. Japchae, most namul (seasoned vegetable banchan),
+      sundubu without meat, and vegetable bibimbap are straightforward. The difficulty
+      is hidden animal products: many kimchi recipes include salted shrimp or anchovy,
+      and most stews start from an anchovy or beef stock. Temple cuisine
+      (sachal eumsik) is fully vegetarian by rule and is served at some dedicated
+      restaurants.
+  - q: What is the difference between gochujang, doenjang, and ganjang?
+    a: >-
+      All three are Korean fermented seasonings made from soybeans, collectively called
+      jang. Ganjang is soy sauce, thin and salty. Doenjang is a thick soybean paste,
+      savoury and earthy, used as the base of stews. Gochujang adds chili powder and
+      glutinous rice to the same soybean foundation, producing a sweet, slow heat.
+  - q: Why is Korean food served all at once instead of in courses?
+    a: >-
+      Because a Korean meal is designed to be assembled by the person eating it. Rice,
+      soup, and every side dish are placed on the table together so each bite can
+      combine them differently — a structure called bapsang. Traditional settings were
+      counted in cheop, the number of side dishes excluding rice, soup, kimchi, and
+      sauces; three-cheop was ordinary and twelve-cheop was reserved for the royal
+      court.
+  - q: What is the difference between Korean BBQ and bulgogi?
+    a: >-
+      Korean BBQ is the format; bulgogi is one dish within it. Korean BBQ means meat
+      grilled at your own table and wrapped in lettuce as you eat, most often
+      samgyeopsal (pork belly) or galbi (short ribs). Bulgogi is specifically thin beef
+      in a soy, pear, and sesame marinade, and it is just as often cooked in a pan at
+      home as grilled at a restaurant.
+  - q: Are Korean side dishes free?
+    a: >-
+      Yes. Banchan are included with the meal at essentially every Korean restaurant in
+      Korea, and refills are free — asking for more is expected rather than rude.
+      Outside Korea, practice varies: many restaurants keep free refills, but some
+      charge for premium items or limit the first serving.
+
+sources:
+  - label: UNESCO — Kimjang, making and sharing kimchi in the Republic of Korea (2013)
+    url: https://ich.unesco.org/en/RL/kimjang-making-and-sharing-kimchi-in-the-republic-of-korea-00881
+  - label: Korea Tourism Organization — VisitKorea
+    url: https://english.visitkorea.or.kr/
+  - label: Korean Food Promotion Institute (한식진흥원)
+    url: https://www.hansik.or.kr/
+  - label: Ministry of Agriculture, Food and Rural Affairs
+    url: https://www.mafra.go.kr/english/index.do
+  - label: National Institute of Korean Language — Romanization of Korean
+    url: https://www.korean.go.kr/front_eng/roman/roman_01.do
+  - label: Encyclopedia of Korean Culture (한국민족문화대백과사전)
+    url: https://encykorea.aks.ac.kr/
+
+author:
+  name: HanBeom
+  url: https://github.com/mahanbeom
+
+datePublished: 2026-09-01
+dateModified: 2026-09-01

@@ -1,0 +1,88 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SEO from '../components/SEO.astro';
+import JsonLd from '../components/JsonLd.astro';
+import FaqSection from '../components/FaqSection.astro';
+import DishTable from '../components/DishTable.astro';
+import LangSwitcher from '../components/LangSwitcher.astro';
+import { UI, formatDate } from '../i18n/ui';
+import { asset, type Locale } from '../lib/site';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  data: CollectionEntry<'pages'>['data'];
+}
+
+const { locale, data } = Astro.props;
+const t = UI[locale];
+const FAQ_ID = 'faq';
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
+    <SEO locale={locale} title={data.title} description={data.description} />
+    <JsonLd locale={locale} data={data} siteName={t.siteName} homeLabel={t.home} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.skipToContent}</a>
+
+    <header class="site-header">
+      <LangSwitcher current={locale} label={t.langNav} />
+    </header>
+
+    <main id="main">
+      <article>
+        <h1>{data.h1}</h1>
+
+        {/* AI 인용 타깃. 정의문으로 시작한다 (SPEC §5 AEO). */}
+        <p class="lede">{data.lede}</p>
+
+        {
+          data.sections.map((section) => (
+            <section aria-labelledby={section.id}>
+              <h2 id={section.id}>{section.heading}</h2>
+              {section.body.map((p) => (
+                <p>{p}</p>
+              ))}
+              {section.render === 'dish-table' && (
+                <DishTable dishes={data.dishes} labels={t.table} spiceLabel={t.spiceLabel} />
+              )}
+            </section>
+          ))
+        }
+
+        <FaqSection id={FAQ_ID} heading={t.faqHeading} faq={data.faq} />
+
+        <footer class="byline">
+          <p>
+            {t.by} <span>{data.author.name}</span> · {t.lastUpdated}{' '}
+            <time datetime={data.dateModified.toISOString().slice(0, 10)}>
+              {formatDate(data.dateModified, locale)}
+            </time>
+          </p>
+        </footer>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <h2 class="sources-heading">{t.sourcesHeading}</h2>
+      <ul class="sources">
+        {
+          data.sources.map((s) => (
+            <li>
+              <a href={s.url} rel="noopener">
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <LangSwitcher current={locale} label={t.langNav} />
+    </footer>
+  </body>
+</html>

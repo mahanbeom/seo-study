@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "korean-food",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "korean-food", "preview"],
+      "port": 4321
+    }
+  ]
+}

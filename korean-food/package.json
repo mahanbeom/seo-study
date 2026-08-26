@@ -1,0 +1,32 @@
+{
+  "name": "korean-food",
+  "version": "0.1.0",
+  "description": "korean food 다국어 SEO/AEO 실험",
+  "scripts": {
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "check": "astro check",
+    "verify": "astro build && node scripts/verify-seo.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "typecheck": "astro check"
+  },
+  "type": "module",
+  "private": "true",
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@mahanbeom/kit": "github:mahanbeom/kit",
+    "cheerio": "^1.2.0",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3"
+  },
+  "prettier": "@mahanbeom/kit/prettier",
+  "packageManager": "pnpm@11.21.0"
+}

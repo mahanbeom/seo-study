@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  dishes: CollectionEntry<'pages'>['data']['dishes'];
+  labels: { dish: string; korean: string; pronunciation: string; spice: string; notes: string };
+  /** 맵기 칸의 스크린리더 설명. {n} 이 0~4 로 치환된다. */
+  spiceLabel: string;
+}
+
+const { dishes, labels, spiceLabel } = Astro.props;
+
+const SPICE_MAX = 4;
+const dots = (n: number) => '●'.repeat(n) + '○'.repeat(SPICE_MAX - n);
+---
+
+{/* 표는 LLM이 파싱해 인용하는 빈도가 높다 (지시서 §6.2). */}
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">{labels.dish}</th>
+        <th scope="col">{labels.korean}</th>
+        <th scope="col">{labels.pronunciation}</th>
+        <th scope="col">{labels.spice}</th>
+        <th scope="col">{labels.notes}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        dishes.map((d) => (
+          <tr>
+            <th scope="row">{d.name}</th>
+            <td lang="ko">{d.korean}</td>
+            <td class="mono">{d.pronunciation}</td>
+            <td class="spice">
+              <span aria-hidden="true">{dots(d.spice)}</span>
+              <span class="sr-only">{spiceLabel.replace('{n}', String(d.spice))}</span>
+            </td>
+            <td>{d.note}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

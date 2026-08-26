@@ -1,0 +1,69 @@
+# GitHub Pages 배포.
+#
+# withastro/action 을 쓰지 않는다 — 그 액션은 아티팩트 업로드까지 내부에서 처리하므로
+# dist 를 _site/<실험이름>/ 으로 옮길 지점이 없다. SPEC.md §4.3 의 "실험 = 폴더 = URL 경로"
+# 구조에서는 이 이동이 필수이고, 실험이 늘어나면 _site 에 여러 빌드를 합쳐야 한다.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포는 한 번에 하나만. 진행 중인 배포는 취소하지 않는다.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: korean-food/pnpm-lock.yaml
+
+      - name: Install
+        working-directory: korean-food
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        working-directory: korean-food
+        run: pnpm build
+
+      # SPEC.md §5 — 완료 기준을 CI에서도 강제한다.
+      # 검증에 실패한 산출물은 배포되지 않는다.
+      - name: Verify SEO requirements
+        working-directory: korean-food
+        run: pnpm exec node scripts/verify-seo.mjs
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp site-root/index.html _site/index.html
+          mv korean-food/dist _site/korean-food
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
