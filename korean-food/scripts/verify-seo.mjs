@@ -355,6 +355,21 @@ check('10. 콘텐츠 요건 (AEO)', () => {
   }
 });
 
+check('11. Search Console 소유권 확인 태그', () => {
+  // 태그가 사라지면 소유권 확인이 조용히 풀리고 색인 데이터가 끊긴다.
+  // 속성 루트(dist/index.html)에 반드시 있어야 한다.
+  const root = join(DIST, 'index.html');
+  expect(existsSync(root), 'dist/index.html (속성 루트) 이 없습니다.');
+  if (!existsSync(root)) return;
+
+  const token = cheerio
+    .load(readFileSync(root, 'utf8'))('meta[name="google-site-verification"]')
+    .attr('content');
+
+  expect(token, '속성 루트에 google-site-verification 메타 태그가 없습니다.');
+  expect(token && token.length > 20, `google-site-verification 토큰이 비정상입니다 — "${token}"`);
+});
+
 // ---------------------------------------------------------------- 출력
 
 let failed = 0;

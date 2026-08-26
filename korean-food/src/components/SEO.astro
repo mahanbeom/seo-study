@@ -1,5 +1,5 @@
 ---
-import { OG_LOCALE, localeUrl, type Locale } from '../lib/site';
+import { GOOGLE_SITE_VERIFICATION, OG_LOCALE, localeUrl, type Locale } from '../lib/site';
 import { availableLocales, resolveXDefault } from '../lib/locales';
 
 interface Props {
@@ -21,6 +21,8 @@ const canonical = localeUrl(Astro.site, locale);
 const available = await availableLocales();
 const xDefault = resolveXDefault(available);
 ---
+
+<meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />
 
 <title>{title}</title>
 <meta name="description" content={description} />

@@ -3,6 +3,18 @@
 export const LOCALES = ['en', 'ja', 'ko'] as const;
 export type Locale = (typeof LOCALES)[number];
 
+/**
+ * Google Search Console 소유권 확인 토큰.
+ *
+ * 속성은 URL 접두어 방식이다 — `github.io` 는 GitHub 소유라 DNS 를 건드릴 수 없어
+ * 도메인 속성을 쓸 수 없다. 확인 대상 URL 은 속성 루트인
+ * `https://mahanbeom.github.io/seo-study/korean-food/` 이다.
+ *
+ * 이 태그를 지우면 소유권 확인이 조용히 풀린다.
+ * scripts/verify-seo.mjs 가 존재 여부를 검사한다.
+ */
+export const GOOGLE_SITE_VERIFICATION = 'CAZX55gflxBSRi64hqqe7G32u-iJlTuufrn9E_8y_jE';
+
 /** 언어가 매칭되지 않는 사용자에게 줄 버전 (SPEC §4.6). */
 export const X_DEFAULT_LOCALE: Locale = 'en';
 

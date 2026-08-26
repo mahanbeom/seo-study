@@ -1,5 +1,5 @@
 ---
-import { LOCALE_LABEL, asset, localePath, rootUrl } from '../lib/site';
+import { GOOGLE_SITE_VERIFICATION, LOCALE_LABEL, asset, localePath, rootUrl } from '../lib/site';
 import { availableLocales } from '../lib/locales';
 import { UI } from '../i18n/ui';
 import '../styles/global.css';
@@ -23,6 +23,8 @@ const available = await availableLocales();
     <meta name="description" content="A guide to Korean food in English, Japanese, and Korean." />
     <meta name="robots" content="noindex,follow" />
     <link rel="canonical" href={canonical} />
+    {/* Search Console 속성 루트가 이 페이지다. 확인 요청 시 Google 이 여기를 가져간다. */}
+    <meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />
   </head>
   <body>
     <div class="locale-picker">
