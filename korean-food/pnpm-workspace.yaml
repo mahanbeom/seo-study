@@ -2,6 +2,9 @@
 allowBuilds:
   # Astro 의 번들러. 네이티브 바이너리를 postinstall 로 설치하므로 빌드에 반드시 필요하다.
   esbuild: true
+  # astro:assets 의 이미지 변환 엔진. pnpm 의 엄격한 node_modules 에서는
+  # Astro 가 전이 의존성으로 해석하지 못해 직접 의존성으로 둔다.
+  sharp: true
 
 # pnpm 의 minimumReleaseAge 정책(갓 배포된 버전 설치 차단)에서 제외한 항목.
 # 공급망 공격 대비 장치이므로 예외는 필요한 것만 남긴다.

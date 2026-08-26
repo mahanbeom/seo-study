@@ -168,6 +168,38 @@ tbody th {
   white-space: nowrap;
 }
 
+/* ---- 이미지 ---- */
+
+.figure {
+  margin: 1.75rem 0 2rem;
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+figcaption .caption {
+  display: block;
+}
+
+figcaption .credit {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
 /* ---- FAQ ---- */
 
 .faq-item h3 {

@@ -148,13 +148,38 @@ robots.txt 는 **오리진 루트에서만** 읽힌다. 이 사이트는 `mahanb
 
 → **Phase 3 의 별도 저장소(`mahanbeom.github.io`) 작업**으로 넘긴다.
 
-### 4.10 이미지 자산 없이 Phase 1 을 마감한다 (미결)
+### 4.10 이미지는 CC/퍼블릭 도메인 자산으로 시작한다 (2026-08-26 해결)
 
-라이선스가 확인된 한식 사진이 없다. 출처가 불분명한 이미지를 넣거나 빈 `og:image` 를
-내보내는 것보다, 텍스트로 완성하고 자산 확보 방식을 따로 결정하는 편이 낫다.
-현재 `og:image` 태그는 출력하지 않는다.
+Wikimedia Commons 에서 3장을 쓴다. **파일마다 API 로 실제 라이선스를 조회해 확인**했고,
+추측으로 넣지 않았다. NC/ND 계열은 배제했다.
 
-→ **Phase 2 시작 전 결정 필요**: 직접 촬영 / 라이선스 구매 / CC 자산 활용 중 택일.
+| 파일                     | 라이선스  | 저작자               |
+| ------------------------ | --------- | -------------------- |
+| `bapsang-table` (히어로) | CC BY 2.0 | egg (Hong, Yun Seon) |
+| `bibimbap`               | CC0       | Andy Li              |
+| `banchan`                | CC BY 2.0 | egg (Hong, Yun Seon) |
+
+- 핫링크하지 않고 **자체 호스팅**한다. 상대가 파일을 옮기면 깨지고, 이미지 검색 신호도
+  우리 도메인에 쌓이지 않는다.
+- 출처 정보를 콘텐츠 스키마의 `credit` 블록으로 관리한다. 화면에 하드코딩하지 않는다.
+- `og:image` 는 히어로를 1200×630 으로 잘라 `public/og/` 에 둔다. `src/assets` 가 아닌
+  이유는 빌드마다 해시가 바뀌지 않는 **안정적인 절대 URL** 이어야 캐시된 소셜 카드가
+  깨지지 않기 때문이다.
+
+### 4.14 이미지 파일명은 출처가 아니라 내용을 기준으로 짓는다
+
+나중에 직접 촬영한 사진으로 교체할 계획이 있다. **이미지 SEO 신호는 파일이 아니라
+URL 에 붙으므로**, 같은 URL 에서 바이트만 갈아끼우면 손실이 0 이다. 반대로 파일명을
+바꾸면 그 URL 에 쌓인 이미지 색인이 사라진다.
+
+```
+bapsang-table.jpg           ← 교체해도 URL 유지
+bapsang-table-wikimedia.jpg ← 교체 = URL 변경 = 초기화
+```
+
+교체 시 절차는 두 단계다. (1) `src/assets/<같은이름>.jpg` 를 덮어쓴다.
+(2) 콘텐츠의 `credit` 블록을 지운다 — CC BY 표기 의무가 사라지므로.
+`credit` 이 있으면 화면에 반드시 렌더되는지를 검증 8-b 가 대조한다.
 
 ### 4.11 FAQPage 스키마는 Google 리치 결과와 무관하다 (2026-08-26 확인)
 
@@ -204,7 +229,9 @@ Rich Results Test 는 `2026-09-01` 같은 날짜만 있는 값에
 - [x] `Article.inLanguage`가 로케일과 일치, `mainEntityOfPage` = canonical
 - [x] `datePublished`/`dateModified`가 시간대를 포함한 ISO 8601 (§4.12)
 - [x] FAQ 스키마의 모든 질문·답변 텍스트가 화면 HTML에도 존재 (§4.5 검증)
-- [x] 모든 `<img>`에 `alt` + `width`/`height`
+- [x] 모든 `<img>`에 `alt`(15자 이상) + `width`/`height`
+- [x] `og:image` 가 절대 URL 이고 `og:image:alt` 와 함께 있으며 dist 에 파일이 존재
+- [x] `credit` 이 있는 이미지는 저작자·라이선스·원본 링크가 화면에 렌더됨 (§4.14)
 - [x] `<h1>` 페이지당 1개, 헤딩 계층 건너뜀 없음
 - [x] 사이트맵 인덱스가 존재하고 모든 로케일 URL을 포함
 - [x] 사이트맵에 noindex 페이지가 없음
@@ -222,7 +249,7 @@ Rich Results Test 는 `2026-09-01` 같은 날짜만 있는 값에
 ### Phase 1 — 수동 확인
 
 - [x] Lighthouse 모바일 — **Performance 100 · Accessibility 100 · Best Practices 100 · SEO 100**
-      (LCP 0.8s · CLS 0 · TBT 0ms, 로컬 preview 기준)
+      (이미지 3장 추가 후 재측정: LCP 1.1s · CLS 0 · TBT 0ms, 로컬 preview 기준)
 - [x] JS 없이 본문 정상 표시 — 산출물의 `<script>` 는 JSON-LD 하나뿐, 실행 코드 0KB
 - [x] 모바일 375px에서 페이지 가로 스크롤 없음 (표만 자체 컨테이너 내부에서 스크롤)
 - [x] **Rich Results Test (실제 URL, 2026-08-26)** — 유효한 항목 2개 감지

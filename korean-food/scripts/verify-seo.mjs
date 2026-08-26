@@ -13,6 +13,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as cheerio from 'cheerio';
+import { parse as parseYaml } from 'yaml';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -276,15 +277,66 @@ check('7. FAQ 스키마 ↔ 화면 내용 일치 (SPEC §4.5)', () => {
   }
 });
 
-check('8. 이미지 alt · width · height (CLS)', () => {
+check('8. 이미지 alt · width · height · og:image', () => {
   for (const p of localePages) {
+    expect(p.$('img').length > 0, `${p.rel}: 이미지가 하나도 없습니다.`);
+
     p.$('img').each((_, el) => {
       const $el = p.$(el);
       const src = $el.attr('src') ?? '(src 없음)';
-      expect($el.attr('alt') !== undefined, `${p.rel}: <img> 에 alt 가 없습니다 — ${src}`);
+      const alt = $el.attr('alt');
+      expect(alt !== undefined, `${p.rel}: <img> 에 alt 가 없습니다 — ${src}`);
+      expect(!alt || alt.trim().length >= 15, `${p.rel}: alt 가 너무 짧습니다 — "${alt}" (${src})`);
       expect($el.attr('width'), `${p.rel}: <img> 에 width 가 없습니다 — ${src}`);
       expect($el.attr('height'), `${p.rel}: <img> 에 height 가 없습니다 — ${src}`);
     });
+
+    // 소셜 카드. 빌드 산출물에 실제 파일이 있어야 한다.
+    const og = p.$('meta[property="og:image"]').attr('content');
+    expect(og, `${p.rel}: og:image 가 없습니다.`);
+    if (!og) continue;
+    expect(og.startsWith('https://'), `${p.rel}: og:image 가 절대 URL 이 아닙니다 — ${og}`);
+    expect(
+      p.$('meta[property="og:image:alt"]').attr('content'),
+      `${p.rel}: og:image:alt 가 없습니다.`,
+    );
+
+    const ogFile = join(DIST, og.replace(ORIGIN, ''));
+    expect(existsSync(ogFile), `${p.rel}: og:image 파일이 dist 에 없습니다 — ${og}`);
+  }
+});
+
+check('8-b. 이미지 출처 표기 (CC BY 의무)', () => {
+  // 콘텐츠 YAML 과 렌더된 HTML 을 대조한다 — 서로 다른 산출물이라 순환 검증이 아니다.
+  for (const p of localePages) {
+    const yamlFile = join(SRC, 'content/pages', `${p.locale}.yaml`);
+    if (!existsSync(yamlFile)) continue;
+
+    const data = parseYaml(readFileSync(yamlFile, 'utf8'));
+    const images = [data.hero, ...(data.sections ?? []).map((sec) => sec.image)].filter(Boolean);
+    const visible = norm(p.$('body').text());
+    const alts = p
+      .$('img')
+      .map((_, el) => norm(p.$(el).attr('alt') ?? ''))
+      .get();
+
+    for (const img of images) {
+      expect(alts.includes(norm(img.alt)), `${p.rel}: alt 가 렌더되지 않았습니다 — ${img.file}`);
+      if (!img.credit) continue;
+
+      expect(
+        visible.includes(norm(img.credit.author)),
+        `${p.rel}: 저작자 표기가 화면에 없습니다 — ${img.file} / ${img.credit.author}`,
+      );
+      expect(
+        visible.includes(norm(img.credit.license)),
+        `${p.rel}: 라이선스 표기가 화면에 없습니다 — ${img.file} / ${img.credit.license}`,
+      );
+      expect(
+        p.html.includes(img.credit.sourceUrl),
+        `${p.rel}: 원본 링크가 화면에 없습니다 — ${img.file}`,
+      );
+    }
   }
 });
 

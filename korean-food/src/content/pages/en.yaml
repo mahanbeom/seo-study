@@ -13,6 +13,20 @@ lede: >-
   A typical meal serves rice, soup, and three to twelve banchan simultaneously rather
   than in courses — a structure called bapsang.
 
+hero:
+  file: bapsang-table
+  alt: >-
+    A Korean table set with more than a dozen small side dishes, a stew in a stone
+    pot, grilled fish, and rice, all served at the same time.
+  caption: >-
+    A Korean meal arrives all at once rather than in courses — rice, a stew, and a
+    spread of banchan sharing the table.
+  credit:
+    author: egg (Hong, Yun Seon)
+    license: CC BY 2.0
+    licenseUrl: https://creativecommons.org/licenses/by/2.0
+    sourceUrl: https://commons.wikimedia.org/wiki/File:Korean_cuisine-Hanjeongsik-03.jpg
+
 sections:
   - id: what-makes-korean-food-distinct
     heading: What Makes Korean Food Distinct
@@ -58,6 +72,18 @@ sections:
         Half of this list contains no chili whatsoever. That is not a curated
         selection — it reflects the actual balance of the everyday Korean repertoire.
 
+    image:
+      file: bibimbap
+      alt: >-
+        A bowl of beef bibimbap topped with a fried egg, cucumber, carrot, and
+        mushroom, with a dish of gochujang beside it.
+      caption: Bibimbap, served with gochujang on the side so you control the heat.
+      credit:
+        author: Andy Li
+        license: CC0
+        licenseUrl: https://creativecommons.org/publicdomain/zero/1.0/
+        sourceUrl: https://commons.wikimedia.org/wiki/File:Beef_Bibimbap_-_SAERO_2025-11-06.jpg
+
   - id: how-a-korean-meal-is-served
     heading: How a Korean Meal Is Served
     body:
@@ -83,6 +109,20 @@ sections:
         dab of ssamjang, a mixture of doenjang and gochujang — a practice called ssam.
         Banchan are refilled free of charge at nearly every restaurant in Korea; asking
         for more is normal, not an imposition.
+
+    image:
+      file: banchan
+      alt: >-
+        Several shallow ceramic dishes of banchan side by side, with braised soy-glazed
+        potatoes in the dish nearest the camera.
+      caption: >-
+        Banchan sit in the middle of the table and are shared throughout the meal.
+        In Korea they are refilled free of charge.
+      credit:
+        author: egg (Hong, Yun Seon)
+        license: CC BY 2.0
+        licenseUrl: https://creativecommons.org/licenses/by/2.0
+        sourceUrl: https://commons.wikimedia.org/wiki/File:Korean_cuisine-Banchan-09.jpg
 
   - id: is-korean-food-spicy
     heading: Is Korean Food Spicy?

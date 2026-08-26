@@ -4,6 +4,7 @@ import SEO from '../components/SEO.astro';
 import JsonLd from '../components/JsonLd.astro';
 import FaqSection from '../components/FaqSection.astro';
 import DishTable from '../components/DishTable.astro';
+import ImageFigure from '../components/ImageFigure.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
 import { UI, formatDate } from '../i18n/ui';
 import { asset, type Locale } from '../lib/site';
@@ -25,7 +26,12 @@ const FAQ_ID = 'faq';
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
-    <SEO locale={locale} title={data.title} description={data.description} />
+    <SEO
+      locale={locale}
+      title={data.title}
+      description={data.description}
+      imageAlt={data.hero.alt}
+    />
     <JsonLd locale={locale} data={data} siteName={t.siteName} homeLabel={t.home} />
   </head>
   <body>
@@ -42,6 +48,9 @@ const FAQ_ID = 'faq';
         {/* AI 인용 타깃. 정의문으로 시작한다 (SPEC §5 AEO). */}
         <p class="lede">{data.lede}</p>
 
+        {/* 히어로는 정의문 뒤에 둔다 — 크롤러와 사람 모두 정의문을 먼저 만나야 한다. */}
+        <ImageFigure image={data.hero} priority />
+
         {
           data.sections.map((section) => (
             <section aria-labelledby={section.id}>
@@ -52,6 +61,7 @@ const FAQ_ID = 'faq';
               {section.render === 'dish-table' && (
                 <DishTable dishes={data.dishes} labels={t.table} spiceLabel={t.spiceLabel} />
               )}
+              {section.image && <ImageFigure image={section.image} />}
             </section>
           ))
         }

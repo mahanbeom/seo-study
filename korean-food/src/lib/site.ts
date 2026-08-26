@@ -36,6 +36,20 @@ function basePath(): string {
   return raw.endsWith('/') ? raw : `${raw}/`;
 }
 
+/**
+ * 소셜 카드 이미지. 1200x630 고정.
+ *
+ * src/assets 가 아니라 public/ 에 둔다 — og:image 는 빌드마다 해시가 바뀌지 않는
+ * **안정적인 절대 URL** 이어야 캐시된 카드가 깨지지 않는다.
+ */
+export const OG_IMAGE = { path: 'og/korean-food.jpg', width: 1200, height: 630 };
+
+/** og:image 및 JSON-LD Article.image 에 쓸 절대 URL. */
+export function ogImageUrl(site: URL | undefined): string {
+  if (!site) throw new Error('astro.config.mjs 의 `site` 가 필요합니다.');
+  return new URL(asset(OG_IMAGE.path), site).href;
+}
+
 /** public/ 자산의 경로. base 접두어를 붙인다 — Astro 는 임의 속성 문자열에 base 를 붙여주지 않는다. */
 export function asset(path: string): string {
   return `${basePath()}${path.replace(/^\//, '')}`;

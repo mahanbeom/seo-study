@@ -13,6 +13,30 @@ import { z } from 'astro/zod';
  * 필수 필드로 선언한 항목은 로케일 하나라도 빠지면 빌드가 실패한다.
  * → 언어별 콘텐츠 패리티가 사람의 주의력이 아니라 스키마로 보장된다.
  */
+/**
+ * 이미지 출처 정보. CC BY 계열은 표기가 **의무**다.
+ *
+ * 이 블록을 데이터로 두는 이유는 나중에 직접 촬영한 사진으로 교체할 때
+ * `credit` 만 지우면 끝나게 하기 위해서다. 화면 곳곳에 하드코딩하면 지울 곳을 찾아다녀야 한다.
+ * scripts/verify-seo.mjs 가 credit 이 있는 이미지는 화면에 출처가 렌더되는지 대조한다.
+ */
+const credit = z.object({
+  author: z.string().min(1),
+  license: z.string().min(2),
+  licenseUrl: z.string().url(),
+  sourceUrl: z.string().url(),
+});
+
+const contentImage = z.object({
+  /** src/assets/<file>.jpg. 출처가 아니라 내용을 기준으로 짓는다 (§4.14). */
+  file: z.string().regex(/^[a-z0-9-]+$/),
+  /** 의미 있는 대체 텍스트. 파일명 반복이 아니라 사진이 보여주는 것을 쓴다. */
+  alt: z.string().min(15),
+  caption: z.string().optional(),
+  /** 직접 촬영한 사진이면 생략한다. */
+  credit: credit.optional(),
+});
+
 const pages = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/pages' }),
   schema: z.object({
@@ -30,6 +54,9 @@ const pages = defineCollection({
      */
     lede: z.string().min(100),
 
+    /** 첫 화면 이미지. LCP 대상이며 og:image 와 짝을 이룬다. */
+    hero: contentImage,
+
     sections: z
       .array(
         z.object({
@@ -39,6 +66,8 @@ const pages = defineCollection({
           body: z.array(z.string().min(1)).min(1),
           /** 이 섹션 뒤에 끼워 넣을 특수 블록. */
           render: z.enum(['dish-table']).optional(),
+          /** 섹션 본문 뒤에 붙는 이미지. */
+          image: contentImage.optional(),
         }),
       )
       .min(1),

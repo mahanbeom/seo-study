@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { localeUrl, rootUrl, type Locale } from '../lib/site';
+import { localeUrl, ogImageUrl, rootUrl, type Locale } from '../lib/site';
 
 interface Props {
   locale: Locale;
@@ -17,6 +17,7 @@ const canonical = localeUrl(Astro.site, locale);
 const root = rootUrl(Astro.site);
 const orgId = `${root}#org`;
 const siteId = `${root}#website`;
+const image = ogImageUrl(Astro.site);
 
 // Google 은 날짜만 있는 값(2026-09-01)에 "datetime 값이 잘못됨 / 시간대 누락" 경고를 낸다.
 // 시간대를 포함한 완전한 ISO 8601 로 내보낸다. 화면의 <time datetime> 은 날짜만으로 충분하다.
@@ -38,6 +39,9 @@ const graph = {
       dateModified: isoDateTime(data.dateModified),
       author: { '@type': 'Person', name: data.author.name, url: data.author.url },
       publisher: { '@id': orgId },
+      // Rich Results Test 가 `image` 누락을 경고한다(경미, 선택사항).
+      // og:image 와 같은 안정적인 절대 URL 을 쓴다.
+      image: [image],
       mainEntityOfPage: canonical,
       isPartOf: { '@id': siteId },
     },

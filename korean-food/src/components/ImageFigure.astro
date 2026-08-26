@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { imageAsset } from '../lib/images';
+
+type ContentImage = NonNullable<CollectionEntry<'pages'>['data']['hero']>;
+
+interface Props {
+  image: ContentImage;
+  /** 히어로처럼 첫 화면에 보이는 이미지. LCP 대상이므로 지연 로딩하지 않는다. */
+  priority?: boolean;
+}
+
+const { image, priority = false } = Astro.props;
+const src = imageAsset(image.file);
+
+// 원본보다 큰 폭은 요청하지 않는다 (업스케일 방지).
+const widths = [480, 800, 1200, 1600].filter((w) => w < src.width).concat(src.width);
+---
+
+<figure class="figure">
+  {/*
+    Astro <Image> 는 빌드 타임에 webp 변형과 srcset 을 만들고 순수 <img> 를 출력한다.
+    하이드레이션이 없으므로 client:* 0건 원칙이 유지된다.
+    width/height 가 자동으로 붙어 CLS 가 발생하지 않는다.
+  */}
+  <Image
+    src={src}
+    alt={image.alt}
+    widths={widths}
+    sizes="(max-width: 44rem) 100vw, 42rem"
+    quality={72}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    decoding={priority ? 'sync' : 'async'}
+  />
+  {
+    (image.caption || image.credit) && (
+      <figcaption>
+        {image.caption && <span class="caption">{image.caption}</span>}
+        {image.credit && (
+          <span class="credit">
+            Photo:{' '}
+            <a href={image.credit.sourceUrl} rel="noopener">
+              {image.credit.author}
+            </a>
+            {' · '}
+            <a href={image.credit.licenseUrl} rel="license noopener">
+              {image.credit.license}
+            </a>
+          </span>
+        )}
+      </figcaption>
+    )
+  }
+</figure>
