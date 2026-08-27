@@ -444,6 +444,56 @@ check('11. Search Console 소유권 확인 태그', () => {
   expect(token && token.length > 20, `google-site-verification 토큰이 비정상입니다 — "${token}"`);
 });
 
+/**
+ * 접힌 줄바꿈이 공백으로 새는 것을 막아야 하는 로케일.
+ *
+ * YAML 의 블록 스칼라(`>-`, `|`)는 줄바꿈을 **공백 한 칸으로 접는다.** 영어와 한국어는
+ * 단어(어절)를 공백으로 구분하므로 줄을 공백 위치에서 끊는 한 무해하다. 일본어는 단어를
+ * 공백으로 구분하지 않기 때문에 문장 한복판에 공백이 생긴다 — ja.yaml 초안에서 실제로
+ * 87 곳이 이렇게 오염됐고, 육안으로는 알아채기 어려웠다.
+ *
+ * 대안은 큰따옴표 스칼라 + 줄 끝 `\` 연속이다. 이쪽은 줄바꿈을 공백 없이 잇는다.
+ */
+const NO_FOLD_LOCALES = ['ja'];
+
+/** 일본어 조판에 존재하지 않는 조합 — 구두점에 붙은 공백. 오탐이 없다. */
+const JA_STRAY_SPACE = /[、。（）「」・][ \t]|[ \t][、。（）「」・]/g;
+
+check('12. 일본어 조판 — 접힌 줄바꿈이 공백으로 새지 않는다', () => {
+  for (const locale of NO_FOLD_LOCALES) {
+    // (1) 원인 차단 — 블록 스칼라를 아예 금지한다.
+    const yamlFile = join(SRC, 'content/pages', `${locale}.yaml`);
+    if (existsSync(yamlFile)) {
+      readFileSync(yamlFile, 'utf8')
+        .split('\n')
+        .forEach((line, i) => {
+          expect(
+            !/(?:^|\s)[|>][-+]?\d*\s*$/.test(line),
+            `${locale}.yaml:${i + 1}: 블록 스칼라는 줄바꿈을 공백으로 접습니다. ` +
+              `큰따옴표 + 줄 끝 \\ 연속으로 바꾸세요 — ${line.trim()}`,
+          );
+        });
+    }
+
+    // (2) 결과 확인 — 렌더된 본문에 흔적이 남지 않았는지 본다.
+    //     문단 단위로 보는 이유는 요소 사이의 들여쓰기 공백을 오탐하지 않기 위해서다.
+    const page = localePages.find((p) => p.locale === locale);
+    if (!page) continue;
+
+    const strays = new Set();
+    page
+      .$('main p, main li, main td, main th, main figcaption, main h1, main h2, main h3')
+      .each((_, el) => {
+        for (const hit of norm(page.$(el).text()).match(JA_STRAY_SPACE) ?? []) strays.add(hit);
+      });
+    expect(
+      strays.size === 0,
+      `${page.rel}: 일본어 구두점에 공백이 붙어 있습니다 — ` +
+        [...strays].map((s) => JSON.stringify(s)).join(', '),
+    );
+  }
+});
+
 // ---------------------------------------------------------------- 출력
 
 let failed = 0;
