@@ -494,6 +494,46 @@ check('12. 일본어 조판 — 접힌 줄바꿈이 공백으로 새지 않는�
   }
 });
 
+/**
+ * 13. IndexNow 키 파일 (SPEC §4.16)
+ *
+ * IndexNow 는 키 파일이 **놓인 디렉터리**가 제출 가능한 URL 범위를 결정한다.
+ * 키가 dist 루트(= /seo-study/korean-food/)에 있어야 /en/ /ja/ /ko/ 를 제출할 수 있고,
+ * 하위 폴더로 옮기는 순간 모든 제출이 범위 밖이 되어 조용히 무효가 된다.
+ *
+ * 파일명과 내용이 갈라져도 마찬가지로 조용히 죽는다(403). 둘 다 여기서 막는다.
+ * 제출 스크립트도 같은 규칙을 소스에서 확인하지만, 실제로 서빙되는 것은 dist 다.
+ */
+check('13. IndexNow 키 파일', () => {
+  const txt = walk(DIST, (f) => f.endsWith('.txt')).map((f) => relative(DIST, f));
+
+  expect(
+    txt.length === 1,
+    `dist 의 .txt 키 파일이 ${txt.length} 개입니다 (1 개여야 합니다) — ${txt.join(', ')}`,
+  );
+  if (txt.length !== 1) return;
+
+  const rel = txt[0];
+  if (rel.includes('/') || rel.includes('\\')) {
+    // 여기서 멈춘다 — 경로가 섞인 이름으로 아래 검사를 이어가면 파생 실패만 늘어난다.
+    expect(
+      false,
+      `키 파일이 하위 폴더에 있습니다 — ${rel}\n` +
+        `      IndexNow 제출 범위가 그 폴더 이하로 좁아져 로케일 URL 이 전부 범위 밖이 됩니다.`,
+    );
+    return;
+  }
+
+  const key = rel.replace(/\.txt$/, '');
+  const body = readFileSync(join(DIST, rel), 'utf8').trim();
+
+  expect(key === body, `키 파일명과 내용이 다릅니다 — 파일 "${key}" / 내용 "${body}"`);
+  expect(
+    /^[a-zA-Z0-9-]{8,128}$/.test(key),
+    `키 형식이 잘못됐습니다 (8~128 자 a-zA-Z0-9-) — "${key}"`,
+  );
+});
+
 // ---------------------------------------------------------------- 출력
 
 let failed = 0;

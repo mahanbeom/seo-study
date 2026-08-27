@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "typecheck": "astro check",
     "metrics": "astro build && node scripts/collect-metrics.mjs",
-    "metrics:render": "node scripts/collect-metrics.mjs --render-only"
+    "metrics:render": "node scripts/collect-metrics.mjs --render-only",
+    "indexnow": "node scripts/submit-indexnow.mjs"
   },
   "type": "module",
   "private": "true",
