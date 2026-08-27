@@ -22,7 +22,9 @@ const CONTENT_DIR = join(ROOT, 'src/content/pages');
 /** git pathspec 은 cwd 기준이다. 이 스크립트는 korean-food/ 에서 git 을 부른다. */
 const CONTENT_PATH = 'src/content/pages';
 
-const ENDPOINT = 'https://api.indexnow.org/indexnow';
+// 응답 코드별 분기(성공 / 일시 오류 / 설정 오류)를 실제로 실행해 보려면 엔드포인트를
+// 바꿔 끼울 수 있어야 한다. 운영에서는 항상 기본값이 쓰인다.
+const ENDPOINT = process.env.INDEXNOW_ENDPOINT ?? 'https://api.indexnow.org/indexnow';
 
 const args = process.argv.slice(2);
 const ALL = args.includes('--all');
@@ -35,6 +37,19 @@ const BASE = config.base.replace(/\/$/, '');
 function fail(message) {
   console.error(`\n  \x1b[31m✗\x1b[0m ${message}\n`);
   process.exit(1);
+}
+
+/**
+ * GitHub Actions 실행 요약 화면에 배지로 남긴다.
+ *
+ * 스텝이 초록이면 200/202 였는지 429/5xx 를 경고로 넘긴 것인지 구분되지 않는다.
+ * 로그를 열어야만 알 수 있는 차이는 결국 아무도 보지 않게 되므로,
+ * 두 경우 모두 요약 화면에 남겨 열지 않고도 구분되게 한다.
+ */
+function annotate(level, title, message) {
+  if (!process.env.GITHUB_ACTIONS) return;
+  const esc = (v) => String(v).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+  console.log(`::${level} title=${esc(title)}::${esc(message)}`);
 }
 
 /**
@@ -162,11 +177,21 @@ const body = await res.text();
 // 200 OK / 202 Accepted(키 검증 대기) 는 성공이다.
 if (res.status === 200 || res.status === 202) {
   console.log(`\n  \x1b[32m✓\x1b[0m ${res.status} — ${locales.length} 개 URL 통보 완료\n`);
+  annotate(
+    'notice',
+    'IndexNow',
+    `${res.status} — ${locales.join(', ')} (${locales.length} 개 URL) 통보 완료`,
+  );
   process.exit(0);
 }
 
 // 우리가 고칠 수 없는 일시적 사정은 배포를 빨갛게 만들 이유가 아니다.
 if (res.status === 429 || res.status >= 500) {
+  annotate(
+    'warning',
+    'IndexNow 미통보',
+    `${res.status} 로 제출하지 못했습니다. 콘텐츠는 배포됐고 다음 배포에서 다시 시도합니다.`,
+  );
   console.warn(
     `\n  \x1b[33m!\x1b[0m ${res.status} — 일시적 오류로 보입니다. 다음 배포에서 다시 시도합니다.\n  ${body.slice(0, 200)}\n`,
   );
