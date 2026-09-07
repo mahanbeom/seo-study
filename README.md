@@ -9,9 +9,11 @@
 
 ## 실험
 
-| 실험 | 타깃 | 배포 경로 | 상태 |
-|---|---|---|---|
-| [`korean-food/`](korean-food) | `korean food` / `韓国料理` (en·ja·ko) | `/seo-study/korean-food/{en,ja,ko}/` | Phase 1 완료 (영어판) |
+실험 모음집 루트: **<https://mahanbeom.github.io/seo-study/>**
+
+| 실험                          | 타깃                                  | 배포                                                                                                                                                                                    | 상태                               |
+| ----------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| [`korean-food/`](korean-food) | `korean food` / `韓国料理` (en·ja·ko) | [en](https://mahanbeom.github.io/seo-study/korean-food/en/) · [ja](https://mahanbeom.github.io/seo-study/korean-food/ja/) · [ko](https://mahanbeom.github.io/seo-study/korean-food/ko/) | Phase 1·2·3 완료 · Phase 4 진행 중 |
 
 실험 하나 = 폴더 하나 = URL 경로 하나로 1:1 대응합니다. 어느 실험도 `/seo-study/`
 루트를 점유하지 않으므로 실험을 나란히 추가할 수 있습니다.
@@ -38,7 +40,7 @@
 cd korean-food
 pnpm install
 pnpm dev        # 개발 서버
-pnpm verify     # 빌드 + SEO 검사 11종 (실패 시 exit 1)
+pnpm verify     # 빌드 + SEO 검사 15종 (실패 시 exit 1)
 pnpm typecheck  # astro check
 pnpm lint
 pnpm metrics    # 빌드 + Lighthouse 측정 → docs/metrics 갱신
@@ -47,25 +49,45 @@ pnpm metrics    # 빌드 + Lighthouse 측정 → docs/metrics 갱신
 패키지 매니저는 **pnpm** 입니다. `packageManager` 필드로 버전이 고정돼 있어
 corepack 이 자동으로 맞춰줍니다.
 
-## Phase 1 검증 결과
+## 검증 결과
 
 ```
-pnpm verify      →  11개 검사 전체 통과
+pnpm verify      →  15개 검사 전체 통과 (en·ja·ko)
 astro check      →  0 errors, 0 warnings
-Lighthouse (모바일, 로컬 preview)
-                 →  Performance 100 · Accessibility 100
-                    Best Practices 100 · SEO 100
-                    LCP 0.8s · CLS 0 · TBT 0ms
+Lighthouse (모바일, 로케일별 · CI 자동 측정)
+                 →  en  Perf 99 · A11y 100 · BP 100 · SEO 100 · LCP 0.98s
+                    ja  Perf 100 · A11y 100 · BP 100 · SEO 100 · LCP 1.12s
+                    ko  Perf 100 · A11y 100 · BP 100 · SEO 100 · LCP 1.13s
+                    CLS 0 (전 로케일)
 JS 번들          →  0KB (client:* 디렉티브 0건)
 ```
 
-Lighthouse 점수는 참고치입니다. 실제 평가 기준은 배포 후 Search Console에 쌓이는
-**CrUX 필드 데이터**입니다.
+SEO·접근성은 CI 게이트입니다 — 로케일 하나라도 기준선(SEO 100 / 접근성 95) 미만이면
+배포되지 않습니다. 반면 **성능 점수는 게이트하지 않습니다.** 러너 부하로 몇 점씩
+흔들리므로 기록만 하고 추세로 읽습니다. 전체 히스토리는
+[`docs/metrics/`](korean-food/docs/metrics) 에 있습니다.
+
+Lighthouse 는 실험실 지표입니다. 실제 평가 기준은 Search Console 의
+**CrUX 필드 데이터**이고, 둘을 혼동하지 않습니다.
+
+## 색인 결과 (2026-09-07 확인)
+
+```
+Google  en · ja · ko 3개 전부 색인 · 노출 발생
+        색인되지 않은 3건은 전부 예상된 것 —
+        슬래시 없는 URL 변형 2 + 의도된 noindex 루트 1
+Bing    3개 URL 인지 · 라이브 페치와 품질 검사 통과 · 크롤 대기 중
+```
+
+같은 사이트·같은 시점에 두 엔진이 갈렸습니다. 구글은 인바운드 링크 0 으로도 크롤·색인·
+노출까지 갔고, Bing 은 사이트맵을 읽고 IndexNow 를 `200` 으로 수락하고 라이브 페치까지
+통과시켰음에도 크롤 일정을 잡지 않았습니다. 실측 근거와 판단은
+[`SPEC.md` §6.3](korean-food/docs/SPEC.md) 에 있습니다.
 
 ## 기술 선택
 
-- **Astro + `output: 'static'`** — 판단 기준은 하나입니다. *크롤러가 받는 첫 HTML에
-  본문이 있는가.* `GPTBot`·`ClaudeBot`·`PerplexityBot` 등 AI 크롤러 상당수는 JS를
+- **Astro + `output: 'static'`** — 판단 기준은 하나입니다. _크롤러가 받는 첫 HTML에
+  본문이 있는가._ `GPTBot`·`ClaudeBot`·`PerplexityBot` 등 AI 크롤러 상당수는 JS를
   실행하지 않으므로, AI 인용이 목표인 이상 초기 HTML 완결성은 전제 조건입니다.
 - **UI 프레임워크·웹폰트 없음** — 전달할 것이 콘텐츠뿐이라 하이드레이션할 대상이
   없습니다. 메인 스레드에 실행할 JS가 없으면 롱태스크도 없습니다.
